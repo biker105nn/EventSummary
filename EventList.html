@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+  <title>Outlook Calendar Widget</title>
+
+</head>
+
+<body>
+
+  <h1>Upcoming Events</h1>
+
+  <div id="events-container"></div>
+
+ 
+
+  <script>
+
+    // Replace 'YOUR_SUBSCRIPTION_URL' with the actual Outlook calendar subscription URL
+
+    const subscriptionUrl = 'https://outlook.live.com/owa/calendar/ccc351d5-4cf1-4320-9197-6e9607ccac72/2c3cdf1c-c465-45b0-af9c-b02273fa4738/cid-0851D07EAB222E95/index.html';
+
+ 
+
+    // Function to fetch events and render them on the page
+
+    async function fetchAndDisplayEvents() {
+
+      try {
+
+        const response = await fetch(subscriptionUrl);
+
+       const data = await response.json();
+
+ 
+
+        const eventsContainer = document.getElementById('events-container');
+
+ 
+
+        if (data.value && data.value.length > 0) {
+
+          const eventsList = document.createElement('ul');
+
+ 
+
+          data.value.forEach(event => {
+
+            const eventItem = document.createElement('li');
+
+            eventItem.textContent = `${event.subject} - ${event.start.dateTime}`;
+
+            eventsList.appendChild(eventItem);
+
+          });
+
+ 
+
+          eventsContainer.appendChild(eventsList);
+
+        } else {
+
+          eventsContainer.textContent = 'No upcoming events.';
+
+        }
+
+      } catch (error) {
+
+        console.error('Error fetching or displaying events:', error);
+
+      }
+
+    }
+
+ 
+
+    // Call the fetchAndDisplayEvents function when the page loads
+
+    fetchAndDisplayEvents();
+
+  </script>
+
+</body>
+
+</html>
+
+ 
